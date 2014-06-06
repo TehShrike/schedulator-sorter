@@ -1,0 +1,22 @@
+{
+  "name": "schedulator-sorter",
+  "version": "1.0.0",
+  "description": "Sorts out who the next people in line are",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TehShrike/schedulator-sorter.git"
+  },
+  "author": "TehShrike",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/TehShrike/schedulator-sorter/issues"
+  },
+  "homepage": "https://github.com/TehShrike/schedulator-sorter",
+  "devDependencies": {
+    "tap": "^0.4.9"
+  }
+}
