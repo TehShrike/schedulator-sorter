@@ -1,4 +1,6 @@
-function canThisPersonWorkThisJob(personAggregateHistory, jobInQuestion) {
+var extend = require('extend')
+
+function canThisPersonWorkThisJob(personAggregateHistory, jobInQuestion, numberOfJobs) {
 	if (typeof personAggregateHistory === 'undefined') {
 		return true
 	} else if (typeof personAggregateHistory.jobs[jobInQuestion] === 'undefined') {
@@ -14,7 +16,7 @@ function canThisPersonWorkThisJob(personAggregateHistory, jobInQuestion) {
 		return oldestJobSoFar.time < thisJob.time ? oldestJobSoFar : thisJob
 	})
 
-	return oldestJobTheyveWorked.jobName === jobInQuestion
+	return Object.keys(personAggregateHistory.jobs).length === numberOfJobs && oldestJobTheyveWorked.jobName === jobInQuestion
 }
 
 function sortWorkersByHowLongAgoTheyWorked(aggregateHistory, a, b) {
@@ -43,7 +45,7 @@ module.exports = function Sorter() {
 	// 	time: 1,
 	// 	job: 'a'
 	// }
-	function thingHappened(thing) {
+	function priorWork(thing) {
 		if (typeof aggregateHistory[thing.personId] === 'undefined') {
 			aggregateHistory[thing.personId] = {
 				lastWork: -1,
@@ -61,7 +63,7 @@ module.exports = function Sorter() {
 		mostRecentTime = Math.max(mostRecentTime, thing.time)
 	}
 
-	function nextSchedule(jobsToSchedule, poolOfWorkers) {
+	function getNextSchedule(jobsToSchedule, poolOfWorkers) {
 		var nextScheduleTime = mostRecentTime + 1
 		var peopleWhoCanWorkJobsByJobName = {}
 		var peopleIdsWeveScheduledAlready = []
@@ -70,7 +72,7 @@ module.exports = function Sorter() {
 		jobsToSchedule.forEach(function(jobName) {
 			peopleWhoCanWorkJobsByJobName[jobName] = poolOfWorkers.filter(function(worker) {
 				var personsAggregateHistory = aggregateHistory[worker.personId]
-				return canThisPersonWorkThisJob(personsAggregateHistory, jobName)
+				return canThisPersonWorkThisJob(personsAggregateHistory, jobName, jobsToSchedule.length)
 			}).sort(sortWorkers)
 		})
 
@@ -90,21 +92,22 @@ module.exports = function Sorter() {
 				}
 			}
 			peopleIdsWeveScheduledAlready.push(chosenCandidate.personId)
-			nextScheduleWorkers[jobName] = chosenCandidate
 
-			var nextWorkThing = {
-				personId: chosenCandidate.personId,
+			var nextWorkThing = extend({
 				time: nextScheduleTime,
 				job: jobName
-			}
-			thingHappened(nextWorkThing)
+			}, chosenCandidate)
+			nextScheduleWorkers[jobName] = nextWorkThing
+
+
+			priorWork(nextWorkThing)
 		})
 
 		return nextScheduleWorkers
 	}
 
 	return {
-		thingHappened: thingHappened,
-		nextSchedule: nextSchedule
+		priorWork: priorWork,
+		getNextSchedule: getNextSchedule
 	}
 }

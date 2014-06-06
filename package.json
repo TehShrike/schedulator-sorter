@@ -18,5 +18,8 @@
   "homepage": "https://github.com/TehShrike/schedulator-sorter",
   "devDependencies": {
     "tap": "^0.4.9"
+  },
+  "dependencies": {
+    "extend": "^1.2.1"
   }
 }
