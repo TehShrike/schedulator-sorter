@@ -85,12 +85,16 @@ module.exports = function Sorter() {
 			var potentialCandidate
 			var chosenCandidate = null
 			while (!chosenCandidate) {
+				if (candidates.length === 0) {
+					throw new Error("No candidate available to work job " + jobName)
+				}
 				potentialCandidate = candidates.shift()
 				var hasAlreadyBeenAssigned = peopleIdsWeveScheduledAlready.indexOf(potentialCandidate.personId) !== -1
 				if (!hasAlreadyBeenAssigned) {
 					chosenCandidate = potentialCandidate
 				}
 			}
+
 			peopleIdsWeveScheduledAlready.push(chosenCandidate.personId)
 
 			var nextWorkThing = extend({
