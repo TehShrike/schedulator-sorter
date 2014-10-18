@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/TehShrike/schedulator-sorter.svg)](https://travis-ci.org/TehShrike/schedulator-sorter)
+
 For a given pool of workers, and a given list of jobs, find out who should work those jobs in the next time period.
 
 Assigns work using these rules
