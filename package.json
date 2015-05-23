@@ -4,7 +4,7 @@
   "description": "Sorts out who the next people in line are",
   "main": "index.js",
   "scripts": {
-    "test": "tap test/*.js"
+    "test": "tape test/*.js"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/TehShrike/schedulator-sorter",
   "devDependencies": {
-    "tap": "^1.0.4"
+    "tape": "^4.0.0"
   },
   "dependencies": {
     "extend": "^2.0.1"

@@ -1,4 +1,4 @@
-var test = require('tap').test
+var test = require('tape')
 var Sorter = require('../')
 
 test("One person who's worked both jobs, and one person who hasn't worked any", function(t) {
@@ -75,12 +75,12 @@ test("Example", function(t) {
 	})
 
 	var firstWeek = sorter.getNextSchedule(['a', 'b'], workerPool)
-	console.log(firstWeek)
+
 	t.equal(firstWeek.a.name, 'Caleb')
 	t.equal(firstWeek.b.name, 'Nathan')
 
 	var secondWeek = sorter.getNextSchedule(['a', 'b'], workerPool)
-	console.log(secondWeek)
+
 	t.equal(secondWeek.a.name, 'Josh')
 	t.equal(secondWeek.b.name, 'Caleb')
 
